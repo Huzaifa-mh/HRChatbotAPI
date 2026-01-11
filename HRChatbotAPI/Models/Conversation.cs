@@ -8,6 +8,6 @@ namespace HRChatbotAPI.Models
         public string? UserMessage { get; set; }
         public string? AIResponse { get; set; }
 
-        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
+        public DateTime TimeStamp { get; set; } 
     }
 }
