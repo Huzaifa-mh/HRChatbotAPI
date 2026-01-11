@@ -1,0 +1,6 @@
+@HRChatbotAPI_HostAddress = http://localhost:5159
+
+GET {{HRChatbotAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
