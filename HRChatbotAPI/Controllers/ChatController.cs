@@ -70,8 +70,12 @@ namespace HRChatbotAPI.Controllers
             {
                 var response = await httpClient.PostAsync(geminiUrl, jsonContent);
                 var responseString = await response.Content.ReadAsStringAsync();
+
+                //Debug
+                Console.WriteLine($"Gemini Response: {responseString}");
                 var geminiResponse = JsonSerializer.Deserialize<GeminiResponse>(responseString,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+
 
                 var aiResponse = geminiResponse?.Candidates?[0]?.Content?.Parts?[0]?.Text ?? "Sorry, I couldn't generate a response.";
 
