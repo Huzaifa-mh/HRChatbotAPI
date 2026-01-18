@@ -2,9 +2,9 @@
 {
     public class ChatRequest
     {
-        public int Id { get; set; }
-        public string? UserMessage { get; set; }
+        //Only for recieving data from the user   
+        public string? Message { get; set; }
 
-        public DateTime TimeStamp { get; set; } = DateTime.Now;
+       
     }
 }
