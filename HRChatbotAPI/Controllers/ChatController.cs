@@ -34,6 +34,25 @@ namespace HRChatbotAPI.Controllers
             }
             return Ok(userData);
         }
+        [HttpGet("list-models")]
+        public async Task<ActionResult> ListAvailableModels()
+        {
+            try
+            {
+                var httpClient = _httpClientFactory.CreateClient();
+                var apiKey = _configuration["GeminiApiKey"];
+                var listModelsUrl = $"https://generativelanguage.googleapis.com/v1/models?key={apiKey}";
+
+                var response = await httpClient.GetAsync(listModelsUrl);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                return Ok(JsonSerializer.Deserialize<object>(responseString));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
 
         //Creating a Post Request to send user message and get response from Gemini API
         [HttpPost]
@@ -46,7 +65,7 @@ namespace HRChatbotAPI.Controllers
 
             var httpClient = _httpClientFactory.CreateClient();
             var apiKey = _configuration["GeminiApiKey"];
-            var geminiUrl = $"https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key={apiKey}";
+            var geminiUrl = $"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={apiKey}";
 
             var requestBody = new
             {
@@ -72,7 +91,7 @@ namespace HRChatbotAPI.Controllers
                 var responseString = await response.Content.ReadAsStringAsync();
 
                 //Debug
-                Console.WriteLine($"Gemini Response: {responseString}");
+                //Console.WriteLine($"Gemini Response: {responseString}");
                 var geminiResponse = JsonSerializer.Deserialize<GeminiResponse>(responseString,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
 
@@ -82,7 +101,8 @@ namespace HRChatbotAPI.Controllers
                 var conversation = new Conversation
                 {
                     UserMessage = request.Message,
-                    AIResponse = aiResponse
+                    AIResponse = aiResponse,
+                    TimeStamp = DateTime.UtcNow
                 };
 
                 _context.Conversations.Add(conversation);
