@@ -59,7 +59,7 @@ namespace HRChatbotAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> SendMessage([FromBody] ChatRequest request)
         {
-            if(string.IsNullOrWhiteSpace(request.Message))
+            if (string.IsNullOrWhiteSpace(request.Message))
             {
                 return BadRequest("Message cant be Empty");
             }
@@ -95,7 +95,7 @@ namespace HRChatbotAPI.Controllers
                 //Debug
                 Console.WriteLine($"Gemini Response: {responseString}");
                 var geminiResponse = JsonSerializer.Deserialize<GeminiResponse>(responseString,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
 
                 var aiResponse = geminiResponse?.Candidates?[0]?.Content?.Parts?[0]?.Text ?? "Sorry, I couldn't generate a response.";
@@ -112,12 +112,14 @@ namespace HRChatbotAPI.Controllers
 
                 return Ok(new { response = aiResponse });
             }
-            catch (Exception ex)
+            //catch (Exception ex)
+            //{
+            //    return StatusCode(500, new { error = ex.Message });
+            //}
+            catch (HttpRequestException httpEx)
             {
-                return StatusCode(500, new { error = ex.Message });
+                return StatusCode(500, new { error = "Error communicating with Gemini API", details = httpEx.Message });
             }
-
-            
         }
     }
 }
