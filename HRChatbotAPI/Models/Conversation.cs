@@ -10,4 +10,5 @@ namespace HRChatbotAPI.Models
 
         public DateTime TimeStamp { get; set; } 
     }
+
 }

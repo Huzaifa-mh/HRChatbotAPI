@@ -23,6 +23,7 @@ namespace HRChatbotAPI.Controllers
             return (data);
         }
 
+        //Get Conversation by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<Conversation>> GetConversationByID(int id)
         {
@@ -91,7 +92,7 @@ namespace HRChatbotAPI.Controllers
                 var responseString = await response.Content.ReadAsStringAsync();
 
                 //Debug
-                //Console.WriteLine($"Gemini Response: {responseString}");
+                Console.WriteLine($"Gemini Response: {responseString}");
                 var geminiResponse = JsonSerializer.Deserialize<GeminiResponse>(responseString,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
 
