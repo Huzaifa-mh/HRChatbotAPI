@@ -82,6 +82,7 @@ namespace HRChatbotAPI.Controllers
                 }
             };
 
+            //Convert request body to JSON
             var jsonContent = new StringContent(
                 JsonSerializer.Serialize(requestBody),
                 System.Text.Encoding.UTF8,
